@@ -1,8 +1,13 @@
 package main
 
-import "math"
+import (
+	"math"
+	"math/rand"
+	"sort"
+	"time"
+)
 
-func TernarySearch(arr []int64, num int64) (bool, int, int64) {
+func TernarySearch(arr []int, num int) (bool, int, int) {
 	start := 0
 	end := len(arr) - 1
 
@@ -31,4 +36,14 @@ func TernarySearch(arr []int64, num int64) (bool, int, int64) {
 	}
 	return false, -1, 0
 
+}
+
+func TestData() []int {
+	rand.Seed(time.Now().Unix())
+
+	numArr := rand.Perm(10000000)
+	sort.Slice(numArr, func(i, j int) bool {
+		return numArr[i] < numArr[j]
+	})
+	return numArr
 }

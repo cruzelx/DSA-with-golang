@@ -1,8 +1,13 @@
 package main
 
-import "math"
+import (
+	"math"
+	"math/rand"
+	"sort"
+	"time"
+)
 
-func binarySearch(arr []int64, start int, end int, num int64) (bool, int) {
+func binarySearch(arr []int, start int, end int, num int) (bool, int) {
 	for start <= end {
 		mid := start + int(math.Floor(float64(end-start)/2))
 
@@ -22,7 +27,7 @@ func binarySearch(arr []int64, start int, end int, num int64) (bool, int) {
 	return false, -1
 }
 
-func ExponentialSearch(arr []int64, num int64) (bool, int, int64) {
+func ExponentialSearch(arr []int, num int) (bool, int, int) {
 	arrLength := len(arr)
 	if num == arr[0] {
 		return true, 0, arr[0]
@@ -37,4 +42,14 @@ func ExponentialSearch(arr []int64, num int64) (bool, int, int64) {
 		return false, -1, 0
 	}
 	return true, index, arr[index]
+}
+
+func TestData() []int {
+	rand.Seed(time.Now().Unix())
+
+	numArr := rand.Perm(10000000)
+	sort.Slice(numArr, func(i, j int) bool {
+		return numArr[i] < numArr[j]
+	})
+	return numArr
 }

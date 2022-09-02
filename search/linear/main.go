@@ -6,10 +6,10 @@ import (
 )
 
 func main() {
-	arr := []int64{1, 2, 3, 4, 6, 9, 8}
+	arr := TestData()
 
 	start := time.Now()
-	found, index := LinearSearch(arr, 1)
+	found, index := LinearSearch(arr, 9999912)
 	elapsed := time.Since(start)
 
 	fmt.Printf("Found: %v	Item:%v		Position:%v		Duration:%v", found, arr[index], index, elapsed)
