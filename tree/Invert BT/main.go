@@ -1,12 +1,13 @@
 package main
 
-import (
-	"fmt"
-	"math/rand"
-)
+import "fmt"
 
 func main() {
-	arr := rand.Perm(20)
-	fmt.Println(arr)
-	Print_BT(GenerateBinaryTree(arr))
+	tree := GenerateBST()
+	PrintTree(tree)
+
+	fmt.Println("\n")
+
+	inverted := InvertBinaryTree(tree)
+	PrintTree(inverted)
 }

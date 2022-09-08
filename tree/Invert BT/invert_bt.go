@@ -7,82 +7,80 @@ import (
 )
 
 type Node struct {
-	val   int
-	left  *Node
-	right *Node
+	Val   int
+	Left  *Node
+	Right *Node
 }
 
-func NewNode(data int) *Node {
-	node := &Node{
-		val:   data,
-		left:  nil,
-		right: nil,
+func (node *Node) InsertNode(val int) {
+	if node.Val > val {
+		if node.Left == nil {
+			node.Left = &Node{Val: val}
+		} else {
+			node.Left.InsertNode(val)
+		}
+	} else if node.Val <= val {
+		if node.Right == nil {
+			node.Right = &Node{Val: val}
+		} else {
+			node.Right.InsertNode(val)
+		}
 	}
-	return node
 }
 
-func InvertBinaryTree(node *Node) {
+func (node *Node) SearchNode(val int) bool {
 	if node == nil {
-		return
+		return false
 	}
-	temp := node
 
-	node.left = temp.right
-	node.right = temp.left
-
-	InvertBinaryTree(node.left)
-	InvertBinaryTree(node.right)
+	if node.Val > val {
+		node.Left.SearchNode(val)
+	} else if node.Val < val {
+		node.Right.SearchNode(val)
+	}
+	return true
 }
 
-func Print_BT(node *Node) {
-	if node.left != nil {
-		Print_BT(node.left)
-	}
-
-	fmt.Printf("%d ", node.val)
-
-	if node.right != nil {
-		Print_BT(node.right)
-	}
-}
-
-var count = 0
-
-func GenerateBinaryTree(arr []int) *Node {
-	rand.Seed(time.Now().UnixNano())
-	count = count + 1
-
-	if len(arr) == 0 {
+func InvertBinaryTree(node *Node) *Node {
+	if node == nil {
 		return nil
 	}
 
-	if len(arr) == 1 {
-		return NewNode(arr[0])
+	InvertBinaryTree(node.Left)
+	InvertBinaryTree(node.Right)
+
+	node.Left, node.Right = node.Right, node.Left
+	return node
+}
+
+func PrintTree(node *Node) {
+	if node == nil {
+		return
 	}
-	// if len(arr) == 1 {
-	// 	node = NewNode(arr[0])
-	// 	return node
-	// }
 
-	max := len(arr)
-	min := 1
+	// pre-order traversal
+	fmt.Print(node.Val, " ")
 
-	// if max-min < 1 {
-	// 	return nil
-	// }
+	PrintTree(node.Left)
+	PrintTree(node.Right)
 
-	split := rand.Intn(max-min+1) + min
-	split = split - 1
+}
 
-	left := arr[:split]
-	right := arr[split:]
+func GenerateBST() *Node {
+	rand.Seed(time.Now().UnixNano())
 
-	node := NewNode(arr[split])
+	numList := []int{rand.Intn((100))}
 
-	node.left = GenerateBinaryTree(left)
-	node.right = GenerateBinaryTree(right)
+	node := &Node{Val: numList[0]}
 
-	fmt.Println("run count", count, arr, split, left, right, node.left, node.right)
+	for i := 0; i < 5; i++ {
+		randNum := rand.Intn(100)
+		node.InsertNode(randNum)
+
+		numList = append(numList, randNum)
+	}
+
+	fmt.Println(numList)
 	return node
 
 }
