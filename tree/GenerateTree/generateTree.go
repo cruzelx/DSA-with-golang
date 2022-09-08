@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -32,26 +33,41 @@ func (node *Node) SearchNode(val int) bool {
 		return false
 	}
 
-	if node.Val == val {
-		return true
-	}
-
 	if node.Val > val {
 		node.Left.SearchNode(val)
 	} else if node.Val < val {
 		node.Right.SearchNode(val)
 	}
+	return true
+}
+
+func PrintTree(node *Node) {
+	if node == nil {
+		return
+	}
+
+	fmt.Print(node.Val, " ")
+
+	PrintTree(node.Left)
+	PrintTree(node.Right)
 
 }
 
 func GenerateBST() *Node {
 	rand.Seed(time.Now().UnixNano())
 
-	node := &Node{Val: rand.Intn(100)}
+	numList := []int{rand.Intn((100))}
 
-	for i := 0; i < 20; i++ {
-		node.InsertNode(rand.Intn(100))
+	node := &Node{Val: numList[0]}
+
+	for i := 0; i < 10; i++ {
+		randNum := rand.Intn(100)
+		node.InsertNode(randNum)
+
+		numList = append(numList, randNum)
 	}
+
+	fmt.Println(numList)
 	return node
 
 }
