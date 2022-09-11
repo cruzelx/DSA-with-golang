@@ -170,7 +170,8 @@ func (ttt *TicTacToe) Play() {
 
 		time.Sleep(2 * time.Second)
 
-		cmd := exec.Command("clear") //Linux example, its tested
+		// clear console
+		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 
