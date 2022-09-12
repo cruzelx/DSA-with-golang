@@ -41,6 +41,55 @@ func (node *Node) SearchNode(val int) bool {
 	return true
 }
 
+func (node *Node) DeleteNode(val int) *Node {
+	if node == nil {
+		return node
+	}
+
+	if val > node.Val {
+		node.Right = node.Right.DeleteNode(val)
+		return node
+	}
+	if val < node.Val {
+		node.Left = node.Left.DeleteNode(val)
+		return node
+	}
+
+	if node.Left == nil && node.Right == nil {
+		return nil
+	}
+
+	if node.Left == nil {
+		temp := node.Right
+		node = nil
+		return temp
+	}
+
+	if node.Right == nil {
+		temp := node.Left
+		node = nil
+		return temp
+	}
+
+	parent := node
+	child := parent.Right
+
+	for child.Left != nil {
+		parent = child
+		child = child.Left
+	}
+
+	if parent != node {
+		parent.Left = child.Right
+	} else {
+		parent.Right = child.Right
+	}
+
+	node.Val = child.Val
+	return node
+
+}
+
 func PrintTree(node *Node) {
 	if node == nil {
 		return
