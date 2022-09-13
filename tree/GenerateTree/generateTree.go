@@ -91,39 +91,72 @@ func (node *Node) DeleteNode(val int) *Node {
 
 }
 
-func NodesOfLevel(node *Node, level int, height int, nodesarr *[]*Node) *[]*Node {
-	var nodes []*Node
+func LevelNodes(node *Node) [][]int {
 	if node == nil {
 		return nil
 	}
 
-	NodesOfLevel(node.Left, level+1, height, nodesarr)
-	NodesOfLevel(node.Right, level+1, height, nodesarr)
+	queue := []*Node{node}
 
-	if level == height {
-		fmt.Println("Level Nodes: ", node)
-		*nodesarr = append(*nodesarr, node)
-		fmt.Println("Level Nodes arr: ", nodes)
+	totalLevelArr := [][]int{}
+
+	for len(queue) > 0 {
+		count := len(queue)
+		levelArr := []int{}
+
+		for count > 0 {
+			temp := queue[0]
+			queue = append(queue[:0], queue[1:]...)
+
+			levelArr = append(levelArr, temp.Val)
+
+			if temp.Left != nil {
+				queue = append(queue, temp.Left)
+			}
+
+			if temp.Right != nil {
+				queue = append(queue, temp.Right)
+			}
+
+			count -= 1
+		}
+
+		totalLevelArr = append(totalLevelArr, levelArr)
 	}
-	return nodesarr
+	return totalLevelArr
 }
 
 func PrintTree(node *Node) {
-	height := heightOfBinaryTree(node)
-	levels := height + 1
+	// height := heightOfBinaryTree(node)
+	// levels := height + 1
 
 	// convert each level of tree to array
 	// arr := [][]int{}
-	for i := 0; i < levels; i++ {
-		for j := 0; j < int(math.Pow(2, float64(i))); j++ {
-			fmt.Print(j)
-		}
-		fmt.Println("\n")
-	}
+	data := LevelNodes(node)
+	fmt.Println(data)
+	levels := len(data)
 
-	for i := 0; i < levels; i++ {
-		printSpace(int(math.Pow(2, float64(levels))) - 1)
-		// fmt.Print(node.Val)
+	count := levels
+	for i, v := range data {
+		printSpace(int(math.Pow(2, float64(count))) - 1)
+		for _, w := range v {
+			if i == 0 {
+				fmt.Print(w)
+
+			} else {
+				if len(v) != int(math.Pow(2, float64(i))) {
+					for k := 0; k < int(math.Pow(2, float64(i))); k++ {
+						prevLevelNodes := data[i-1]
+
+					}
+				}
+
+				fmt.Print(w)
+				printSpace(2*int(math.Pow(2, float64(count))) - 1)
+			}
+		}
+		count--
+		fmt.Println("\n")
 	}
 }
 

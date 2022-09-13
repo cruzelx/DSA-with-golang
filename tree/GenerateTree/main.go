@@ -16,7 +16,4 @@ func main() {
 	height = heightOfBinaryTree(tree)
 	fmt.Println("Height: ", height)
 
-	var nodesarr *[]*Node
-	fmt.Println("Nodes of level: ", NodesOfLevel(tree, 2, height, nodesarr))
-	fmt.Println("data: ", nodesarr)
 }
