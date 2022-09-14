@@ -19,10 +19,11 @@ func (node *Node) AppendNode(val int) {
 	last.Next = &Node{Data: val}
 }
 
-// func (node *Node) PushNode(val int) {
-// 	node = &Node{Data: val, Next: node}
-// 	fmt.Println(node)
-// }
+func (node *Node) PushNode(val int) {
+	temp := node
+	newNode := &Node{Data: val, Next: temp}
+	temp = newNode
+}
 
 // func (node *Node) InsertAfterNode(prevNode *Node, val int) {
 // 	if prevNode == nil {
@@ -33,6 +34,7 @@ func (node *Node) AppendNode(val int) {
 
 func (node *Node) PrintLinkedList() {
 	temp := node
+	fmt.Print(temp.Data, " ")
 	for temp.Next != nil {
 		temp = temp.Next
 		fmt.Print(temp.Data, " ")
@@ -49,6 +51,5 @@ func GenerateLinkedList() *Node {
 	for _, v := range randArr {
 		node.AppendNode(v)
 	}
-	fmt.Println(node)
 	return node
 }
