@@ -2,13 +2,15 @@ package main
 
 func main() {
 	list := GenerateLinkedList()
-	list.PrintLinkedList()
+	list.Print()
 
-	list.AppendNode(101)
-	list.PrintLinkedList()
-	
-	list.PushNode(102)
-	// list.InsertAfterNode()
-	list.PrintLinkedList()
+	list.Append(101)
+	list.Print()
+
+	list.Prepend(102)
+	list.Print()
+
+	list.Reverse()
+	list.Print()
 
 }

@@ -11,45 +11,76 @@ type Node struct {
 	Next *Node
 }
 
-func (node *Node) AppendNode(val int) {
-	last := node
-	for last.Next != nil {
-		last = last.Next
+type LinkedList struct {
+	Head *Node
+}
+
+func newNode(data int) *Node {
+	return &Node{
+		Data: data,
+		Next: nil,
 	}
-	last.Next = &Node{Data: val}
 }
 
-func (node *Node) PushNode(val int) {
-	temp := node
-	newNode := &Node{Data: val, Next: temp}
-	temp = newNode
-}
-
-// func (node *Node) InsertAfterNode(prevNode *Node, val int) {
-// 	if prevNode == nil {
-// 		return
-// 	}
-// 	prevNode.Next = &Node{Next: prevNode.Next, Data: val}
-// }
-
-func (node *Node) PrintLinkedList() {
-	temp := node
-	fmt.Print(temp.Data, " ")
-	for temp.Next != nil {
-		temp = temp.Next
-		fmt.Print(temp.Data, " ")
+func newList() *LinkedList {
+	return &LinkedList{
+		Head: nil,
 	}
-	fmt.Println("\n")
 }
 
-func GenerateLinkedList() *Node {
+func (list *LinkedList) Append(data int) {
+
+	newNode := newNode(data)
+	if list.Head == nil {
+		list.Head = newNode
+	} else {
+		curr := list.Head
+		for curr.Next != nil {
+			curr = curr.Next
+		}
+		curr.Next = newNode
+	}
+}
+
+func (list *LinkedList) Prepend(data int) {
+	newNode := &Node{Data: data, Next: list.Head}
+	list.Head = newNode
+}
+
+func (list *LinkedList) Print() {
+	curr := list.Head
+	for curr != nil {
+		fmt.Print(curr.Data, " ")
+		curr = curr.Next
+	}
+	fmt.Println()
+
+}
+
+func (list *LinkedList) Reverse() {
+	curr := list.Head
+	var prev, next *Node
+
+	for curr != nil {
+		next = curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+	}
+	
+	list.Head = prev
+}
+
+func GenerateLinkedList() *LinkedList {
 	rand.Seed(time.Now().UnixNano())
-	randArr := rand.Perm(20)
+	randArr := rand.Perm(5)
 
-	node := &Node{Data: rand.Intn(100)}
+	list := newList()
 
 	for _, v := range randArr {
-		node.AppendNode(v)
+
+		list.Append(v)
 	}
-	return node
+
+	return list
 }
