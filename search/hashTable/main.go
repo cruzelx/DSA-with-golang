@@ -1,15 +1,26 @@
 package main
 
+import "fmt"
+
 func main() {
-	mapper := NewHashTable()
+	mapper := NewHashTable(3)
 
-	mapper.set("Alex", 24)
-	mapper.set("Taste", "Sweet")
+	mapper.set("fruits", []string{"orange", "apple"})
+	mapper.set("age", 12)
+	mapper.set("is_adult", false)
+	mapper.set("activity", "swimming")
 
 	mapper.display()
+	fmt.Println()
 
-	mapper.get("Alex")
+	mapper.remove("activity")
 
-	mapper.remove("Alex")
 	mapper.display()
+	fmt.Println()
+	fmt.Println(mapper.get("fruits"))
+	fmt.Println()
+
+	mapper.set("activity", "football")
+	mapper.display()
+
 }
