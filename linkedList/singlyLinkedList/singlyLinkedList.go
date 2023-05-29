@@ -54,7 +54,6 @@ func (list *LinkedList) Print() {
 		curr = curr.Next
 	}
 	fmt.Println()
-
 }
 
 func (list *LinkedList) Reverse() {
@@ -67,8 +66,45 @@ func (list *LinkedList) Reverse() {
 		prev = curr
 		curr = next
 	}
-	
+
 	list.Head = prev
+}
+
+func (list *LinkedList) FindAtIndex(index int) *Node {
+	curr := list.Head
+	count := 0
+	for curr != nil {
+		if count == index {
+			return curr
+		}
+		curr = curr.Next
+		count++
+
+	}
+	return nil
+}
+
+func ZipperList(list1 *LinkedList, list2 *LinkedList) *LinkedList {
+
+	curr1 := list1.Head
+	curr2 := list2.Head
+
+	for curr1 != nil && curr2 != nil {
+
+		temp := curr1.Next
+		curr1.Next = curr2
+
+		curr2 = curr2.Next
+		curr1.Next.Next = temp
+		curr1 = temp
+	}
+
+	if curr2 != nil {
+		curr1.Next = curr2
+	}
+
+	return list1
+
 }
 
 func GenerateLinkedList() *LinkedList {
