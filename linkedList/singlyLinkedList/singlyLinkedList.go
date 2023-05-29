@@ -47,6 +47,27 @@ func (list *LinkedList) Prepend(data int) {
 	list.Head = newNode
 }
 
+func (list *LinkedList) Remove(index int) {
+	curr := list.Head
+
+	if index < 0 {
+		return
+	}
+	if index == 0 {
+		list.Head = list.Head.Next
+		return
+	}
+
+	prev := curr
+	for i := 0; i < index; i++ {
+		prev = curr
+		curr = curr.Next
+	}
+	prev.Next = curr.Next
+
+
+}
+
 func (list *LinkedList) Print() {
 	curr := list.Head
 	for curr != nil {
