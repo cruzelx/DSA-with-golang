@@ -26,10 +26,22 @@ func RemoveAtIndex[T any](slice []T, index int) []T {
 
 func (ht *HashTable) _hash(key string) int {
 	hash := 0
+	mul := 1
 
-	for _, c := range []rune(key) {
+	// for _, c := range []rune(key) {
+	// 	char_code := int(c)
+	// 	hash += char_code
+	// }
+
+	// for better distribution of keys
+	for i, c := range []rune(key) {
 		char_code := int(c)
-		hash += char_code
+		if i%4 == 0 {
+			mul = 1
+		} else {
+			mul *= 256
+		}
+		hash += char_code * mul
 	}
 	return hash % ht.bucket_size
 }
@@ -37,7 +49,7 @@ func (ht *HashTable) _hash(key string) int {
 func (ht *HashTable) get(key string) interface{} {
 	hash := ht._hash(key)
 
-	if ht.bucket[hash] != nil {
+	if len(ht.bucket[hash]) > 0 {
 		for _, v := range ht.bucket[hash] {
 			if v.key == key {
 				return v.value
@@ -50,24 +62,23 @@ func (ht *HashTable) get(key string) interface{} {
 func (ht *HashTable) set(key string, value interface{}) {
 	hash := ht._hash(key)
 
-	if ht.bucket[hash] != nil {
+	if len(ht.bucket[hash]) > 0 {
 		for i, v := range ht.bucket[hash] {
 			if v.key == key {
-				ht.bucket[hash][i] = KeyVal{key, value}
-			} else {
-				ht.bucket[hash] = append(ht.bucket[hash], KeyVal{key, value})
+				ht.bucket[hash][i].value = value
+				return
 			}
-			break
 		}
-	} else {
-		ht.bucket[hash] = append(ht.bucket[hash], KeyVal{key: key, value: value})
+
 	}
+	ht.bucket[hash] = append(ht.bucket[hash], KeyVal{key: key, value: value})
+
 }
 
 func (ht *HashTable) remove(key string) bool {
 	hash := ht._hash(key)
 
-	if ht.bucket[hash] != nil {
+	if len(ht.bucket[hash]) > 0 {
 		for i, v := range ht.bucket[hash] {
 			if v.key == key {
 				ht.bucket[hash] = RemoveAtIndex(ht.bucket[hash], i)
@@ -76,13 +87,6 @@ func (ht *HashTable) remove(key string) bool {
 		}
 	}
 	return false
-
-	// if key_val != (KeyVal{}) && key_val.key == key {
-	// 	ht.bucket[hash] = KeyVal{}
-	// 	return true
-	// }
-
-	// return false
 }
 
 func (ht *HashTable) display() {
