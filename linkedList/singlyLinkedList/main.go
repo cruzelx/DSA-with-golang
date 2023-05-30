@@ -12,6 +12,9 @@ func main() {
 	list.Prepend(102)
 	list.Print()
 
+	list.InsertAfter(1000, 7)
+	list.Print()
+
 	list.Remove(6)
 	list.Print()
 

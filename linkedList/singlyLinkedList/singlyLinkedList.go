@@ -47,6 +47,41 @@ func (list *LinkedList) Prepend(data int) {
 	list.Head = newNode
 }
 
+func (list *LinkedList) InsertAfter(data int, index int) {
+	curr := list.Head
+
+	if index < 0 {
+		return
+	}
+	if index == 0 {
+		list.Head.Next = &Node{Data: data, Next: curr.Next}
+		return
+	}
+
+	for i := 0; i < index; i++ {
+		if curr == nil {
+			return
+		}
+		curr = curr.Next
+	}
+
+	if curr == nil {
+		list.Append(data)
+		return
+	}
+
+	curr.Next = &Node{Data: data, Next: curr.Next}
+
+	// for curr != nil {
+	// 	if position == index {
+	// 		next := curr.Next
+	// 		curr.Next = &Node{Data: data, Next: next}
+	// 	}
+	// 	curr = curr.Next
+	// 	position++
+	// }
+}
+
 func (list *LinkedList) Remove(index int) {
 	curr := list.Head
 
@@ -64,7 +99,6 @@ func (list *LinkedList) Remove(index int) {
 		curr = curr.Next
 	}
 	prev.Next = curr.Next
-
 
 }
 
