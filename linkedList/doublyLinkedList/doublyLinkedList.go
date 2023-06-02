@@ -13,8 +13,9 @@ type Node struct {
 }
 
 type DoublyLinkedList struct {
-	Head *Node
-	Tail *Node
+	Head   *Node
+	Tail   *Node
+	Length int
 }
 
 func NewNode(data int) *Node {
@@ -23,8 +24,9 @@ func NewNode(data int) *Node {
 
 func NewDoublyLinkedList() *DoublyLinkedList {
 	return &DoublyLinkedList{
-		Head: nil,
-		Tail: nil,
+		Head:   nil,
+		Tail:   nil,
+		Length: 0,
 	}
 }
 
@@ -58,12 +60,14 @@ func (dll *DoublyLinkedList) Prepend(data int) {
 		dll.Tail = node
 		node.Next = nil
 		node.Prev = nil
+		dll.Length++
 		return
 	}
 
 	node.Next = dll.Head
 	dll.Head.Prev = node
 	dll.Head = node
+	dll.Length++
 }
 
 func (dll *DoublyLinkedList) Append(data int) {
@@ -74,38 +78,81 @@ func (dll *DoublyLinkedList) Append(data int) {
 		dll.Tail = node
 		node.Next = nil
 		node.Prev = nil
+		dll.Length++
 		return
 	}
 
 	node.Prev = dll.Tail
 	dll.Tail.Next = node
 	dll.Tail = node
+	dll.Length++
 
 }
 
 func (dll *DoublyLinkedList) InsertAfter(data int, index int) {
+
 	if index < 0 {
 		return
 	}
 
 	if index == 0 {
 		dll.Prepend(data)
+		dll.Length++
+		return
 	}
 
 	curr := dll.Head
 
 	for i := 0; i < index; i++ {
+		if index >= dll.Length {
+			return
+		}
 		if curr == nil {
 			return
 		}
 		curr = curr.Next
+
 	}
 
 	if curr == nil {
 		dll.Append(data)
+		dll.Length++
+		return
 	}
 
 	curr.Next = &Node{Data: data, Prev: curr, Next: curr.Next}
+	dll.Length++
+}
+
+func (dll *DoublyLinkedList) Remove(index int) {
+	curr := dll.Head
+
+	if index < 0 {
+		return
+	}
+
+	if index == 0 {
+		dll.Head = dll.Head.Next
+		dll.Head.Prev = nil
+		dll.Length--
+		return
+	}
+
+	prev := curr
+	for i := 0; i < index; i++ {
+		if index >= dll.Length {
+			return
+		}
+		prev = curr
+		curr = curr.Next
+	}
+
+	prev.Next = curr.Next
+	if curr.Next != nil {
+		prev.Next.Prev = prev
+	}
+	dll.Length--
+
 }
 
 func GenerateDoublyLinkedList() *DoublyLinkedList {

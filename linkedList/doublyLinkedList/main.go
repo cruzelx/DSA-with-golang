@@ -11,6 +11,9 @@ func main() {
 	dll.Prepend(2022)
 	dll.PrintForward()
 
-	// dll.InsertAfter(2, 9999)
-	// dll.PrintForward()
+	dll.InsertAfter(9999, 2)
+	dll.PrintForward()
+
+	dll.Remove(100)
+	dll.PrintForward()
 }
