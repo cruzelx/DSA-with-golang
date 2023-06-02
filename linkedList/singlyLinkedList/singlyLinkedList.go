@@ -12,7 +12,8 @@ type Node struct {
 }
 
 type LinkedList struct {
-	Head *Node
+	Head   *Node
+	Length int
 }
 
 func newNode(data int) *Node {
@@ -24,7 +25,8 @@ func newNode(data int) *Node {
 
 func newList() *LinkedList {
 	return &LinkedList{
-		Head: nil,
+		Head:   nil,
+		Length: 0,
 	}
 }
 
@@ -40,11 +42,13 @@ func (list *LinkedList) Append(data int) {
 		}
 		curr.Next = newNode
 	}
+	list.Length++
 }
 
 func (list *LinkedList) Prepend(data int) {
 	newNode := &Node{Data: data, Next: list.Head}
 	list.Head = newNode
+	list.Length++
 }
 
 func (list *LinkedList) InsertAfter(data int, index int) {
@@ -55,11 +59,12 @@ func (list *LinkedList) InsertAfter(data int, index int) {
 	}
 	if index == 0 {
 		list.Head.Next = &Node{Data: data, Next: curr.Next}
+		list.Length++
 		return
 	}
 
 	for i := 0; i < index; i++ {
-		if curr == nil {
+		if index >= list.Length {
 			return
 		}
 		curr = curr.Next
@@ -67,10 +72,12 @@ func (list *LinkedList) InsertAfter(data int, index int) {
 
 	if curr == nil {
 		list.Append(data)
+		list.Length++
 		return
 	}
 
 	curr.Next = &Node{Data: data, Next: curr.Next}
+	list.Length++
 
 	// for curr != nil {
 	// 	if position == index {
@@ -90,15 +97,21 @@ func (list *LinkedList) Remove(index int) {
 	}
 	if index == 0 {
 		list.Head = list.Head.Next
+		list.Length--
 		return
 	}
 
 	prev := curr
 	for i := 0; i < index; i++ {
+		if index >= list.Length {
+			return
+		}
+
 		prev = curr
 		curr = curr.Next
 	}
 	prev.Next = curr.Next
+	list.Length--
 
 }
 
@@ -160,6 +173,20 @@ func ZipperList(list1 *LinkedList, list2 *LinkedList) *LinkedList {
 
 	return list1
 
+}
+
+func (ll *LinkedList) RemoveAlternateNodes(head *Node) {
+	if head == nil {
+		return
+	}
+
+	curr := head.Next
+	if curr == nil {
+		return
+	}
+
+	head.Next = curr.Next
+	ll.RemoveAlternateNodes(head.Next)
 }
 
 func GenerateLinkedList() *LinkedList {
