@@ -24,9 +24,9 @@ func main() {
 	fmt.Println(lru.Get(3))
 	lru.Print()
 
-	fmt.Println(lru.Get(0))
+	fmt.Println(lru.Get(4))
 	lru.Print()
 
-	fmt.Println(lru.Get(0))
+	fmt.Println(lru.Get(11))
 	lru.Print()
 }

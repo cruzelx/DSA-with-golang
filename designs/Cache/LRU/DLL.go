@@ -22,55 +22,29 @@ func NewNode(key int, value int) *Node {
 }
 
 func NewDLL() *DoublyLinkedList {
+	sentinal := &Node{}
 	return &DoublyLinkedList{
-		Head: nil,
-		Tail: nil,
+		Head: sentinal,
+		Tail: sentinal,
 	}
 }
 
 func (dll *DoublyLinkedList) Prepend(node *Node) {
 
-	if dll.Head == nil {
-		dll.Head = node
-		dll.Tail = node
-		dll.Head.Prev = nil
-		dll.Tail.Next = nil
-		return
-	}
-
 	node.Next = dll.Head
+	node.Prev = nil
 	dll.Head.Prev = node
 	dll.Head = node
 
 }
 
 func (dll *DoublyLinkedList) Remove(node *Node) {
-	if node == dll.Head {
-		dll.Head = dll.Head.Next
-		dll.Head.Prev = nil
-		return
-	}
-
-	if node == dll.Tail {
-		dll.Tail = dll.Tail.Prev
-		dll.Tail.Next = nil
-		return
-	}
 
 	node.Prev.Next = node.Next
 	node.Next.Prev = node.Prev
 }
 
 func (dll *DoublyLinkedList) RemoveTail() {
-	if dll.Head == nil {
-		return
-	}
-
-	if dll.Tail == dll.Head {
-		dll.Head = nil
-		dll.Tail = nil
-		return
-	}
 
 	currTail := dll.Tail
 	dll.Tail = dll.Tail.Prev

@@ -16,8 +16,10 @@ func NewLRU(capacity int) *LRU {
 	}
 }
 
-func (lru *LRU) Get(key int) int {
+// When getting the key, if matched in hashtable,
+// the node in the hastable is removed its position in doubly linked list and prepend to it
 
+func (lru *LRU) Get(key int) int {
 	if node, ok := lru.bucket[key]; ok {
 		lru.dll.Remove(node)
 		lru.dll.Prepend(node)
@@ -27,6 +29,9 @@ func (lru *LRU) Get(key int) int {
 	return -1
 }
 
+// When putting the key-val, if matched in hash table, replace the value, remove the node and prepend to the list
+// else check if the bucket has reached its limit and delete the least recently used node i.e the last node then
+// a new node with key val is prepended in doubly linked list and reference it in hash table
 func (lru *LRU) Put(key int, value int) {
 	if node, ok := lru.bucket[key]; ok {
 		node.Value = value
