@@ -1,7 +1,18 @@
 go 1.19
 
 use (
+	./designs/Cache/LRU
+	./designs/ConsitentHashing/hashRing
 	./gameTheory/minmax
+	./linkedList/doublyLinkedList
 	./linkedList/singlyLinkedList
+	./search/binary
+	./search/exponential
 	./search/hashTable
+	./search/interpolation
+	./search/linear
+	./search/ternary
+	./tree/checkIfBST
+	./tree/generateTree
+	./tree/heightOfBinaryTree
 )

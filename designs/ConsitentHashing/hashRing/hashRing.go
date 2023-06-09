@@ -7,7 +7,6 @@ import (
 )
 
 type HashRing struct {
-	nodes      []string
 	sortedHash []uint32
 	hashmap    map[uint32]string
 	replica    int
@@ -35,7 +34,7 @@ func (hr *HashRing) AddNode(node string) {
 }
 
 func (hr *HashRing) getNode(key string) string {
-	hash := crc32.ChecksumIEEE([]byte(key))
+	hash := crc32.ChecksumIEEE([]byte(key))   
 	index := sort.Search(len(hr.sortedHash), func(i int) bool { return hr.sortedHash[i] >= hash })
 	if index == len(hr.sortedHash) {
 		index = 0

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -90,15 +91,42 @@ func (node *Node) DeleteNode(val int) *Node {
 
 }
 
-func PrintTree(node *Node) {
+func printBinaryTree(node *Node, level int, isRight bool, indent string) {
 	if node == nil {
 		return
 	}
 
-	fmt.Print(node.Val, " ")
+	if level > 0 {
+		var stb strings.Builder
 
-	PrintTree(node.Left)
-	PrintTree(node.Right)
+		for i := 0; i < level-1; i++ {
+			stb.WriteString("│   ")
+		}
+		if isRight {
+			stb.WriteString("└── ")
+			indent += "    "
+		} else {
+			stb.WriteString("├── ")
+			indent += "│   "
+		}
+		fmt.Print(stb.String())
+	}
+	fmt.Println(node.Val)
+
+	printBinaryTree(node.Right, level+1, true, indent)
+	printBinaryTree(node.Left, level+1, false, indent)
+}
+
+func PrintTree(node *Node) {
+	printBinaryTree(node, 0, false, "")
+	// if node == nil {
+	// 	return
+	// }
+
+	// fmt.Print(node.Val, " ")
+
+	// PrintTree(node.Left)
+	// PrintTree(node.Right)
 
 }
 

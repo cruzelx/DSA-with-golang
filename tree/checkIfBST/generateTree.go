@@ -88,7 +88,7 @@ func GenerateBST() *Node {
 
 	node := &Node{Val: numList[0]}
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 100; i++ {
 		randNum := rand.Intn(100)
 		node.InsertNode(randNum)
 
