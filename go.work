@@ -1,11 +1,17 @@
 go 1.19
 
 use (
+	./combinatorialOptimization/knapsack
 	./designs/Cache/LRU
 	./designs/ConsitentHashing/hashRing
+	./gameTheory/backtracking/examples/nQueens
+	./gameTheory/backtracking/examples/sudoku
 	./gameTheory/minmax
+	./graph/bfs/basic
+	./graph/examples/maze_puzzle
 	./linkedList/doublyLinkedList
 	./linkedList/singlyLinkedList
+	./search/BoyerMoore
 	./search/binary
 	./search/exponential
 	./search/hashTable
@@ -14,5 +20,9 @@ use (
 	./search/ternary
 	./tree/checkIfBST
 	./tree/generateTree
+	./tree/heaps/minHeap
 	./tree/heightOfBinaryTree
+	./tree/invertBinaryTree
+	./tree/sumOfAllNodes
+	./tree/trie
 )

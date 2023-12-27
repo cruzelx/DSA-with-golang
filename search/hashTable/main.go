@@ -1,33 +1,43 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"hashTable/hasher"
+)
 
 func main() {
-	// Init hash map with buket size,
-	mapper := NewHashTable(6)
+	// Initial bucket size/array length
+	bucketSize := 4
 
-	mapper.set("fruits", []string{"orange", "apple"})
-	mapper.set("age", 12)
-	mapper.set("is_adult", false)
-	mapper.set("activity", "swimming")
-	mapper.set("flavour", "spicy")
-	mapper.set("flavour", "spicy")
-	mapper.set("game", "gta-v")
-	mapper.set("method", "brute-force")
-	mapper.set("wrapper", "react")
-	mapper.set("bot", "discord")
-	mapper.set("company", "apple")
+	// %load at which the bucket is resized/doubled and rehashed
+	loadFactor := 80
 
-	mapper.display()
+	mapper := NewHashTable(bucketSize, loadFactor, hasher.Djb2)
+
+	// Set few values
+	mapper.Set("fruits", []string{"orange", "apple"})
+	mapper.Set("age", 12)
+	mapper.Set("is_adult", false)
+
+	mapper.Display()
 	fmt.Println()
 
-	mapper.remove("activity")
+	mapper.Set("activity", KeyVal{"sport", "swimming"})
+	mapper.Set("flavour", "spicy")
+	mapper.Set("flavour", "spicy")
 
-	mapper.display()
+	mapper.Display()
 	fmt.Println()
 
-	mapper.set("activity", "football")
-	mapper.set("activiyt", "volley ball")
-	mapper.display()
+	mapper.Remove("activity")
+
+	mapper.Set("activity", "football")
+	mapper.Set("activiyt", "volley ball")
+
+	mapper.Display()
+
+	// Plot standard deviation vs bucket sizes
+	// Plot()
+	// WebPlot()
 
 }
