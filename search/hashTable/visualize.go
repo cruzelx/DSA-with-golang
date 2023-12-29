@@ -70,7 +70,7 @@ func WebPlot() {
 	page := components.NewPage()
 	page.AddCharts(line)
 
-	f, err := os.Create("line.html")
+	f, err := os.Create("analytics/line.html")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -127,7 +127,7 @@ func Plot() {
 	}
 
 	// Save plot to a file
-	fileName := "stddev_vs_bucketsize.png"
+	fileName := "analytics/stddev_vs_bucketsize.png"
 	if err := p.Save(6*vg.Inch, 4*vg.Inch, fileName); err != nil {
 		log.Fatalf("Could not save plot: %v", err)
 	}
