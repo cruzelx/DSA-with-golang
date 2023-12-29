@@ -34,6 +34,9 @@ func main() {
 	mapper.Set("activity", "football")
 	mapper.Set("activiyt", "volley ball")
 
+	is_adult := mapper.Get("is_adult")
+	fmt.Println(is_adult)
+
 	mapper.Display()
 
 	// Plot standard deviation vs bucket sizes

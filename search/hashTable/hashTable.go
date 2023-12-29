@@ -50,6 +50,8 @@ func (ht *HashTable) _hash(Key string) int {
 	// https://en.wikipedia.org/wiki/Double_hashing
 
 	h1 := int(ht.HashFunc(Key) % uint32(ht.BucketSize))
+
+	// Must never resolve to 0 value
 	h2 := int(hasher.UnknownHash(Key) % uint32(ht.BucketSize))
 
 	i := 0

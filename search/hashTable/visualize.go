@@ -21,6 +21,11 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 )
 
+const (
+	LOADFACTOR = 80
+)
+
+// Data structure that represents the single item for analysis.
 type Result struct {
 	HashFunc          string
 	StandardDeviation float64
@@ -128,6 +133,7 @@ func Plot() {
 	}
 }
 
+// Generate distribution data for each combination of metrics
 func getDistributions() map[string][]Result {
 	hashFuncs := map[string]func(string) uint32{
 		"djb2":        hasher.Djb2,
@@ -148,28 +154,35 @@ func getDistributions() map[string][]Result {
 	for name, function := range hashFuncs {
 		for i, size := range bucketSizes {
 
-			ht := NewHashTable(size, 80, function)
+			// Initialize the table with given size, load factor and hash function
+			ht := NewHashTable(size, LOADFACTOR, function)
 
-			bucket := make(map[int]int)
+			// Hashmap to track the number of items in the slot
+			freqCounter := make(map[int]int)
 
 			for _, key := range keysByBucketSize[i] {
 				index := ht._hash(key)
+
+				// If key exists in the table already, we skip
 				if ht.Get(key) != nil {
 					continue
 				}
-				bucket[index]++
+				freqCounter[index]++
 				ht.Set(key, "Value")
 			}
-			std, mean := stdAndMean(bucket)
+			std, mean := stdAndMean(freqCounter)
 			distribution[name] = append(distribution[name], Result{HashFunc: name, StandardDeviation: std, Mean: mean, BucketSize: size})
 		}
 	}
 	return distribution
 }
 
+// Calculate mean, variance and standard deviation
+// See more: https://en.wikipedia.org/wiki/Standard_deviation
 func stdAndMean(buckets map[int]int) (float64, float64) {
 	n := float64(len(buckets))
 	sum := 0
+
 	for _, val := range buckets {
 		sum += val
 	}
@@ -186,6 +199,7 @@ func stdAndMean(buckets map[int]int) (float64, float64) {
 
 }
 
+// Generate real-life like email addresses
 func generateEmails(size int) []string {
 	results := []string{}
 
@@ -195,6 +209,7 @@ func generateEmails(size int) []string {
 	return results
 }
 
+// Generate random strings
 func generateFixedStrings(count, size int) []string {
 	rand.Seed(time.Now().UnixNano())
 
