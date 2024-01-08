@@ -1,0 +1,25 @@
+goos: darwin
+goarch: arm64
+pkg: LRU
+BenchmarkCustomLRU_Put-8      	 9704211	       132.6 ns/op	      80 B/op	       1 allocs/op
+BenchmarkCustomLRU_Put-8      	 9702781	       128.3 ns/op	      80 B/op	       1 allocs/op
+BenchmarkCustomLRU_Put-8      	 9455698	       131.8 ns/op	      80 B/op	       1 allocs/op
+BenchmarkCustomLRU_Put-8      	 9448786	       124.2 ns/op	      80 B/op	       1 allocs/op
+BenchmarkCustomLRU_Put-8      	 9824010	       123.3 ns/op	      80 B/op	       1 allocs/op
+BenchmarkHashicorpLRU_Put-8   	11802489	       101.9 ns/op	      80 B/op	       1 allocs/op
+BenchmarkHashicorpLRU_Put-8   	11480025	       109.0 ns/op	      80 B/op	       1 allocs/op
+BenchmarkHashicorpLRU_Put-8   	11567476	       109.1 ns/op	      80 B/op	       1 allocs/op
+BenchmarkHashicorpLRU_Put-8   	11594164	       107.7 ns/op	      80 B/op	       1 allocs/op
+BenchmarkHashicorpLRU_Put-8   	11465712	       117.4 ns/op	      80 B/op	       1 allocs/op
+BenchmarkCustomLRU_Get-8      	76556244	        14.97 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCustomLRU_Get-8      	96125608	        13.45 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCustomLRU_Get-8      	90840758	        13.40 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCustomLRU_Get-8      	93287206	        13.68 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCustomLRU_Get-8      	95826231	        12.84 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashicorpLRU_Get-8   	63269448	        19.72 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashicorpLRU_Get-8   	60549610	        26.31 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashicorpLRU_Get-8   	59444932	        20.34 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashicorpLRU_Get-8   	61496409	        20.47 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashicorpLRU_Get-8   	63389211	        18.87 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	LRU	130.283s
