@@ -4,42 +4,71 @@ import (
 	"fmt"
 	"hash/crc32"
 	"sort"
+	"sync"
 )
 
 type HashRing struct {
-	sortedHash []uint32
-	hashmap    map[uint32]string
-	replica    int
+	SortedHash   []uint32
+	Hashmap      map[uint32]string
+	ReplicaNodes int
+	Mutex        sync.RWMutex
 }
 
-func NewHashRing(replica int) *HashRing {
+func NewHashRing(ReplicaNodes int) *HashRing {
 	return &HashRing{
-		sortedHash: []uint32{},
-		hashmap:    make(map[uint32]string),
-		replica:    replica,
+		SortedHash: []uint32{},
+		Hashmap:    make(map[uint32]string),
+		ReplicaNodes:    ReplicaNodes,
+		Mutex:      sync.RWMutex{},
 	}
 }
 
 func (hr *HashRing) AddNode(node string) {
-	for i := 0; i < hr.replica; i++ {
-		replicaKey := fmt.Sprintf("%s:%d", node, i)
-		hash := crc32.ChecksumIEEE([]byte(replicaKey))
-		hr.hashmap[hash] = node
-		hr.sortedHash = append(hr.sortedHash, hash)
+	hr.Mutex.Lock()
+	defer hr.Mutex.Unlock()
+
+	for i := 0; i < hr.ReplicaNodes; i++ {
+		ReplicaNodesNode := fmt.Sprintf("%s:%d", node, i)
+		hash := crc32.ChecksumIEEE([]byte(ReplicaNodesNode))
+		hr.Hashmap[hash] = node
+		hr.SortedHash = append(hr.SortedHash, hash)
 	}
 
-	sort.Slice(hr.sortedHash, func(i, j int) bool {
-		return hr.sortedHash[i] < hr.sortedHash[j]
+	sort.Slice(hr.SortedHash, func(i, j int) bool {
+		return hr.SortedHash[i] < hr.SortedHash[j]
 	})
 }
 
-func (hr *HashRing) getNode(key string) string {
-	hash := crc32.ChecksumIEEE([]byte(key))   
-	index := sort.Search(len(hr.sortedHash), func(i int) bool { return hr.sortedHash[i] >= hash })
-	if index == len(hr.sortedHash) {
+func (hr *HashRing) GetNode(key string) (string, bool) {
+	hr.Mutex.RLock()
+	defer hr.Mutex.RUnlock()
+
+	hash := crc32.ChecksumIEEE([]byte(key))
+	index := sort.Search(len(hr.SortedHash), func(i int) bool { return hr.SortedHash[i] >= hash })
+	if index == len(hr.SortedHash) {
 		index = 0
 	}
-	return hr.hashmap[hr.sortedHash[index]]
+	if len(hr.SortedHash) == 0 {
+		return "", false
+	}
+	if val, ok := hr.Hashmap[hr.SortedHash[index]]; ok {
+		return val, true
+	} else {
+		return "", false
+	}
 }
 
+func (hr *HashRing) RemoveNode(node string) {
+	hr.Mutex.Lock()
+	defer hr.Mutex.Unlock()
 
+	newSortedHash := []uint32{}
+	for _, hash := range hr.SortedHash {
+		if hr.Hashmap[hash] != node {
+			newSortedHash = append(newSortedHash, hash)
+		} else {
+			delete(hr.Hashmap, hash)
+		}
+	}
+	hr.SortedHash = newSortedHash
+}
