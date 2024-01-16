@@ -67,5 +67,6 @@ func main() {
 	manager.Close()
 	PrintMapAsTable(&manager.Nodes)
 	visualizeHashRing(manager.HashRing)
+	visualizeStandardDeviation(manager)
 
 }
